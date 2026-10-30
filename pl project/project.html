@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Smart Waste Collection Tracker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f5f0;
+            color: #26352a;
+        }
+
+        header {
+            background: #198754;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            background: #146c43;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 25px auto;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px #00000015;
+        }
+
+        .card h3 {
+            color: #198754;
+        }
+
+        .card p {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .section {
+            background: white;
+            padding: 22px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #00000015;
+            overflow-x: auto;
+        }
+
+        h2 {
+            color: #198754;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #198754;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f8f3;
+        }
+
+        form {
+            display: grid;
+            gap: 12px;
+            max-width: 500px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        button {
+            padding: 11px;
+            font-size: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #198754;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #146c43;
+        }
+
+        footer {
+            background: #146c43;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>♻️ EcoTrack</h1>
+        <p>Smart Waste Collection and Recycling Tracker</p>
+    </header>
+
+    <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#add">Add Collection</a>
+        <a href="#records">Collection Records</a>
+        <a href="#categories">Waste Categories</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Dashboard -->
+        <section class="dashboard" id="dashboard">
+
+            <div class="card">
+                <h3>Total Waste</h3>
+                <p id="totalWaste">100 kg</p>
+            </div>
+
+            <div class="card">
+                <h3>Recyclable Waste</h3>
+                <p id="recyclableWaste">70 kg</p>
+            </div>
+
+            <div class="card">
+                <h3>Recycling Percentage</h3>
+                <p id="recyclingPercentage">70%</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Collections</h3>
+                <p id="totalCollections">5</p>
+            </div>
+
+        </section>
+
+        <!-- Add Waste Collection -->
+        <section class="section" id="add">
+
+            <h2>Add Waste Collection</h2>
+
+            <form id="collectionForm">
+
+                <label for="location">Collection Location</label>
+                <select id="location" required>
+                    <option value="Green Park">Green Park</option>
+                    <option value="City Market">City Market</option>
+                    <option value="College Road">College Road</option>
+                </select>
+
+                <label for="category">Waste Category</label>
+                <select id="category" required>
+                    <option value="Plastic">Plastic</option>
+                    <option value="Paper">Paper</option>
+                    <option value="Metal">Metal</option>
+                    <option value="Organic">Organic</option>
+                    <option value="Mixed Waste">Mixed Waste</option>
+                </select>
+
+                <label for="quantity">Quantity (kg)</label>
+                <input type="number" id="quantity" min="0.01" step="0.01" placeholder="Enter waste quantity" required>
+
+                <button type="submit">Add Collection</button>
+
+            </form>
+
+            <p id="message" role="status"></p>
+
+        </section>
+
+        <!-- Collection Records -->
+        <section class="section" id="records">
+
+            <h2>Waste Collection Records</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Location</th>
+                        <th>Waste Category</th>
+                        <th>Quantity (kg)</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody id="collectionTable">
+                    <tr>
+                        <td>1</td>
+                        <td>Green Park</td>
+                        <td>Plastic</td>
+                        <td>25</td>
+                        <td>2026-10-20</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Green Park</td>
+                        <td>Paper</td>
+                        <td>15</td>
+                        <td>2026-10-20</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>City Market</td>
+                        <td>Metal</td>
+                        <td>20</td>
+                        <td>2026-10-21</td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td>City Market</td>
+                        <td>Organic</td>
+                        <td>30</td>
+                        <td>2026-10-21</td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td>College Road</td>
+                        <td>Plastic</td>
+                        <td>10</td>
+                        <td>2026-10-22</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <!-- Waste Categories -->
+        <section class="section" id="categories">
+
+            <h2>Waste Categories</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category ID</th>
+                        <th>Category Name</th>
+                        <th>Recyclable</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Plastic</td>
+                        <td>Yes</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Paper</td>
+                        <td>Yes</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Metal</td>
+                        <td>Yes</td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td>Organic</td>
+                        <td>No</td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td>Mixed Waste</td>
+                        <td>No</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+    </div>
+
+    <footer>
+        <p>EcoTrack | Smart Waste Collection and Recycling Tracker</p>
+    </footer>
+
+    <script>
+        // Initial collection records
+        const collections = [
+            {
+                id: 1, location: "Green Park", category: "Plastic",
+                quantity: 25, date: "2026-10-20"
+            },
+
+            {
+                id: 2, location: "Green Park", category: "Paper",
+                quantity: 15, date: "2026-10-20"
+            },
+
+            {
+                id: 3, location: "City Market", category: "Metal",
+                quantity: 20, date: "2026-10-21"
+            },
+
+            {
+                id: 4, location: "City Market", category: "Organic",
+                quantity: 30, date: "2026-10-21"
+            },
+
+            {
+                id: 5, location: "College Road", category: "Plastic",
+                quantity: 10, date: "2026-10-22"
+            }
+        ];
+
+        const recyclableCategories = ["Plastic", "Paper", "Metal"];
+
+        // Calculate totals and update dashboard
+        function updateDashboard() {
+            const total = collections.reduce(
+                (sum, item) => sum + item.quantity, 0
+            );
+
+            const recyclable = collections
+                .filter(item => recyclableCategories.includes(item.category))
+                .reduce((sum, item) => sum + item.quantity, 0);
+
+            const percentage = total === 0
+                ? 0
+                : (recyclable / total) * 100;
+
+            document.getElementById("totalWaste").textContent =
+                total.toFixed(2) + " kg";
+
+            document.getElementById("recyclableWaste").textContent =
+                recyclable.toFixed(2) + " kg";
+
+            document.getElementById("recyclingPercentage").textContent =
+                percentage.toFixed(2) + "%";
+
+            document.getElementById("totalCollections").textContent =
+                collections.length;
+        }
+
+        // Display collection records in the table
+        function displayCollections() {
+            const table = document.getElementById("collectionTable");
+            table.replaceChildren();
+
+            collections.forEach(item => {
+                const row = document.createElement("tr");
+
+                [
+                    item.id,
+                    item.location,
+                    item.category,
+                    item.quantity.toFixed(2),
+                    item.date
+                ].forEach(value => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                table.appendChild(row);
+            });
+        }
+
+        // Add a new collection record
+        document.getElementById("collectionForm")
+            .addEventListener("submit", function (event) {
+
+                event.preventDefault();
+
+                const location = document.getElementById("location").value;
+                const category = document.getElementById("category").value;
+                const quantity = Number(
+                    document.getElementById("quantity").value
+                );
+
+                if (!Number.isFinite(quantity) || quantity <= 0) {
+                    document.getElementById("message").textContent =
+                        "Please enter a quantity greater than zero.";
+                    return;
+                }
+
+                const newCollection = {
+                    id: Math.max(0, ...collections.map(item => item.id)) + 1,
+                    location: location,
+                    category: category,
+                    quantity: quantity,
+                    date: new Date().toISOString().slice(0, 10)
+                };
+
+                collections.push(newCollection);
+
+                displayCollections();
+                updateDashboard();
+
+                document.getElementById("message").textContent =
+                    "Waste collection added successfully!";
+
+                this.reset();
+            });
+
+        // Initial display
+        displayCollections();
+        updateDashboard();
+    </script>
+
+</body>
+
+</html>
